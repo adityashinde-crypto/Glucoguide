@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101a2d">
+  <title>GlucoGuide — Diabetes Classification Learning Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="GlucoGuide home"><span class="brand-mark">✳</span><span>gluco<span class="brand-light">guide</span></span></a>
+    <nav><a href="#how-it-works">How it works</a><a href="#about-model">About the model</a></nav>
+    <div class="top-note"><span class="live-dot"></span> Student ML project</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span>✦</span> MACHINE LEARNING · HEALTH AWARENESS</div>
+        <h1>A little insight.<br><span>A healthier next step.</span></h1>
+        <p class="hero-sub">Explore how a trained Random Forest classifier responds to measurements from its training dataset. Clear inputs, clear units, and an educational result — not a diagnosis.</p>
+        <div class="hero-points"><span><i>✓</i> Dataset-matched inputs</span><span><i>✓</i> Model-powered result</span><span><i>✓</i> No data saved</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="art-core"><div class="pulse-ring"></div><span class="heart">♡</span><span class="art-spark spark-a">✦</span><span class="art-spark spark-b">✧</span></div>
+        <div class="floating-card card-top"><span class="mini-icon mint">↗</span><div><b>Small steps count</b><small>Awareness is a start</small></div></div>
+        <div class="floating-card card-bottom"><span class="mini-icon peach">♥</span><div><b>Your health, your pace</b><small>Learn without judgement</small></div></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="form-panel panel">
+        <div class="panel-heading">
+          <div><div class="step-label">YOUR QUICK CHECK <span>01 / 02</span></div><h2>Enter your measurements</h2>
+          <p>Enter values in the same units used by the model's training dataset. If a measurement is unknown, use the dataset's documented missing-value convention rather than guessing.</p></div>
+          <div class="heading-icon">✺</div>
+        </div>
+
+        <form id="prediction-form">
+          <div class="field-grid">
+            <div class="field">
+              <label for="Pregnancies">Number of pregnancies</label><span class="helper">Count; enter 0 if not applicable</span>
+              <div class="input-wrap"><input id="Pregnancies" name="Pregnancies" type="number" min="0" max="30" step="1" value="0" required><span class="unit">count</span></div>
+            </div>
+            <div class="field">
+              <label for="Glucose">Glucose</label><span class="helper">Plasma glucose concentration</span>
+              <div class="input-wrap"><input id="Glucose" name="Glucose" type="number" min="1" max="500" step="any" placeholder="e.g. 120" required><span class="unit">mg/dL</span></div>
+            </div>
+            <div class="field">
+              <label for="BloodPressure">Diastolic blood pressure</label><span class="helper">Lower number in a blood pressure reading</span>
+              <div class="input-wrap"><input id="BloodPressure" name="BloodPressure" type="number" min="1" max="300" step="any" placeholder="e.g. 70" required><span class="unit">mmHg</span></div>
+            </div>
+            <div class="field">
+              <label for="SkinThickness">Skin thickness</label><span class="helper">Triceps skinfold measurement</span>
+              <div class="input-wrap"><input id="SkinThickness" name="SkinThickness" type="number" min="0" max="150" step="any" placeholder="e.g. 20" required><span class="unit">mm</span></div>
+            </div>
+            <div class="field">
+              <label for="Insulin">Insulin</label><span class="helper">2-hour serum insulin</span>
+              <div class="input-wrap"><input id="Insulin" name="Insulin" type="number" min="0" max="3000" step="any" placeholder="e.g. 85" required><span class="unit">µU/mL</span></div>
+            </div>
+            <div class="field">
+              <label for="BMI">Body mass index (BMI)</label><span class="helper">Can be calculated from height and weight below</span>
+              <div class="input-wrap"><input id="BMI" name="BMI" type="number" min="0.1" max="100" step="0.1" placeholder="e.g. 24.5" required><span class="unit">kg/m²</span></div>
+              <button type="button" class="info-link" id="open-bmi">Calculate BMI from height &amp; weight <span>↗</span></button>
+            </div>
+            <div class="field">
+              <label for="DiabetesPedigreeFunction">Diabetes pedigree function</label><span class="helper">Dataset-derived family-history score; not a yes/no question</span>
+              <div class="input-wrap"><input id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" type="number" min="0" max="10" step="any" placeholder="e.g. 0.5" required><span class="unit">score</span></div>
+            </div>
+            <div class="field">
+              <label for="Age">Age</label><span class="helper">Age at the time of the recorded measurements</span>
+              <div class="input-wrap"><input id="Age" name="Age" type="number" min="1" max="120" step="1" placeholder="e.g. 35" required><span class="unit">years</span></div>
+            </div>
+          </div>
+          <div class="dataset-note"><b>Units and source fields:</b> Glucose (mg/dL), blood pressure (mmHg), skin thickness (mm), insulin (µU/mL), BMI (kg/m²), diabetes pedigree function (unitless score), age (years), and pregnancies (count). These labels reflect the common Pima diabetes dataset schema; verify against the exact dataset documentation used for training.</div>
+          <div class="form-foot">
+            <div class="privacy"><span class="lock">⌑</span><span><b>Private by design</b><small>Inputs are sent to the local model API for prediction and are not stored by this app.</small></span></div>
+            <button class="primary-btn" type="submit" id="submit-btn">Get model result <span>→</span></button>
+          </div>
+          <p class="validation-note" id="form-message" role="alert"></p>
+        </form>
+      </div>
+
+      <aside class="side-panel">
+        <div class="side-card reassurance"><div class="side-icon">✧</div><h3>No judgement.<br>Just information.</h3><p>This student project demonstrates how a machine-learning classifier processes structured data. It cannot diagnose diabetes or replace a healthcare professional.</p><div class="side-rule"></div><div class="side-meta"><span class="avatar-stack"><i>●</i><i>●</i><i>●</i></span><span>Built for learning, not diagnosis</span></div></div>
+        <div class="side-card model-card"><div class="model-top"><span class="model-symbol">⌘</span><span class="tag">UNDER THE HOOD</span></div><h3>Random Forest classifier</h3><p>The website sends the eight training features to the backend, which loads the saved model and returns its classification.</p><a href="#about-model">Explore the model <span>↗</span></a></div>
+      </aside>
+    </section>
+
+    <section id="result-section" class="result-section hidden" aria-live="polite">
+      <div class="result-header"><div><div class="step-label">YOUR MODEL OUTPUT <span>02 / 02</span></div><h2>Prediction returned</h2><p>The result below is the model's class output, not a medical assessment.</p></div><button id="edit-btn" class="secondary-btn" type="button">← Edit measurements</button></div>
+      <div class="result-grid">
+        <div class="result-main panel">
+          <div class="result-status" id="result-status"><span class="status-dot"></span><span id="status-label">Model result</span></div>
+          <div class="score-row"><div><div class="score-caption">MODEL CLASS</div><div class="score-number" id="class-number">—</div></div><div class="score-ring" id="score-ring"><div><b id="probability-number">—</b><small>class 1 probability</small></div></div></div>
+          <div class="meter"><span id="meter-fill"></span></div><div class="meter-labels"><span>0%</span><span>100%</span></div>
+          <p class="result-explainer" id="result-explainer"></p>
+          <div class="result-disclaimer"><span>ⓘ</span><p><b>Important:</b> Model probability is not necessarily calibrated personal risk. This educational model is not clinically validated and cannot tell you whether you have diabetes.</p></div>
+        </div>
+        <div class="result-insights panel"><h3>What does this mean?</h3><p class="muted">The classifier returns one of the labels it learned during training. The output should be interpreted only in the context of the dataset and model limitations.</p>
+          <div class="next-step"><span class="next-icon">↗</span><div><b>A sensible next step</b><p>If you have health concerns, discuss appropriate testing and results with a qualified healthcare professional.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-section" id="how-it-works"><div class="section-intro"><div class="eyebrow">MADE TO BE UNDERSTOOD</div><h2>From dataset features<br>to a class label.</h2><p>A classification project trains on examples, evaluates performance, and then applies the saved model to new inputs.</p></div><div class="process-grid"><article class="process-card"><span class="process-num">01</span><div class="process-icon">⌁</div><h3>Collect features</h3><p>Enter the same eight columns and units that the model received during training.</p></article><article class="process-card"><span class="process-num">02</span><div class="process-icon">⠿</div><h3>Run Random Forest</h3><p>The backend loads your saved fitted pipeline and returns the predicted class.</p></article><article class="process-card"><span class="process-num">03</span><div class="process-icon">◎</div><h3>Interpret responsibly</h3><p>Understand the output as an educational classification, not a diagnosis.</p></article></div></section>
+
+    <section class="model-section" id="about-model"><div class="model-copy"><div class="eyebrow">ENGINEERING NOTEBOOK</div><h2>The ML part<br>is the point.</h2><p>GlucoGuide uses a saved Random Forest pipeline trained outside the website. The backend accepts the model's eight expected features and returns the classifier output.</p><div class="model-chips"><span>Classification</span><span>Random Forest</span><span>Feature preprocessing</span><span>Model evaluation</span></div></div><div class="code-card"><div class="code-head"><span><i></i><i></i><i></i></span><span>prediction-flow.js</span><span class="code-badge">MODEL API</span></div><pre><code>const response = await fetch("/api/predict", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(trainingFeatures)
+});
+
+const result = await response.json();</code></pre><div class="code-foot"><span>● Uses saved Random Forest pipeline</span><span>Not a diagnostic tool</span></div></div></section>
+
+    <footer><a class="brand footer-brand" href="/"><span class="brand-mark">✳</span><span>gluco<span class="brand-light">guide</span></span></a><p>Engineering ML project · Educational use only; not medical advice.</p><a href="#how-it-works">Back to top ↑</a></footer>
+  </main>
+
+  <div class="modal-backdrop hidden" id="bmi-modal" role="dialog" aria-modal="true" aria-labelledby="bmi-title">
+    <div class="modal">
+      <button class="modal-close" id="close-bmi" aria-label="Close BMI calculator" type="button">×</button>
+      <div class="modal-icon">↗</div><h2 id="bmi-title">BMI calculator</h2>
+      <p>Enter height and weight. BMI is calculated as weight (kg) ÷ height (m)². This calculation is only a screening measure.</p>
+      <div class="modal-fields">
+        <label for="height">Height <div class="input-wrap"><input type="number" id="height" min="50" max="250" step="any" placeholder="170"><span class="unit">cm</span></div></label>
+        <label for="weight">Weight <div class="input-wrap"><input type="number" id="weight" min="10" max="500" step="any" placeholder="68"><span class="unit">kg</span></div></label>
+      </div>
+      <div class="bmi-preview hidden" id="bmi-preview"></div>
+      <div class="modal-actions"><button class="secondary-btn" id="calculate-bmi" type="button">Calculate BMI</button><button class="primary-btn" id="use-bmi" type="button">Use this BMI <span>→</span></button></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/static/script.js"></script>
+</body>
+</html>
